@@ -1,11 +1,872 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Mi sitio</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Francisco García Torres — .NET Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #f7f5f2;
+      --surface:  #f0ede8;
+      --ink:      #1a1814;
+      --ink2:     #4a4640;
+      --ink3:     #9a958f;
+      --rule:     #ddd9d3;
+      --accent:   #2a5c45;
+      --accent2:  #c8956c;
+      --white:    #ffffff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 5rem;
+      background: rgba(247,245,242,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--ink3);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 8rem 5rem 4rem;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.75rem;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 28px; height: 1px;
+      background: var(--accent);
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 6vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.75rem;
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-desc {
+      font-size: 0.95rem;
+      color: var(--ink2);
+      line-height: 1.85;
+      max-width: 380px;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      animation: fadeUp 0.7s 0.3s ease both;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.6rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      border-radius: 1px;
+      transition: all 0.25s;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+      border: 1px solid var(--accent);
+    }
+
+    .btn-primary:hover {
+      background: transparent;
+      color: var(--accent);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink2);
+      border: 1px solid var(--rule);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--ink2);
+      color: var(--ink);
+    }
+
+    /* Hero stats card */
+    .hero-right {
+      animation: fadeUp 0.7s 0.35s ease both;
+    }
+
+    .stats-card {
+      background: var(--white);
+      border: 1px solid var(--rule);
+      padding: 2.5rem;
+    }
+
+    .stats-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink3);
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid var(--surface);
+    }
+
+    .stat-row:last-child { border-bottom: none; }
+
+    .stat-row-label {
+      font-size: 0.8rem;
+      color: var(--ink3);
+    }
+
+    .stat-row-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .stat-row-value span { color: var(--accent); font-style: italic; }
+
+    .hero-divider {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 5rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    /* SECTIONS */
+    section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 6rem 5rem;
+    }
+
+    .section-header {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 2rem;
+      align-items: baseline;
+      margin-bottom: 3.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .section-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      color: var(--ink3);
+      font-style: italic;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    /* SKILLS */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+    }
+
+    .skill-card {
+      background: var(--white);
+      padding: 2rem 1.75rem;
+      transition: background 0.2s;
+    }
+
+    .skill-card:hover { background: var(--surface); }
+
+    .skill-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .skill-desc {
+      font-size: 0.78rem;
+      color: var(--ink3);
+      line-height: 1.7;
+      margin-bottom: 1.2rem;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+
+    .tag {
+      background: var(--surface);
+      color: var(--ink2);
+      font-size: 0.68rem;
+      padding: 0.2rem 0.55rem;
+      letter-spacing: 0.03em;
+    }
+
+    /* EXPERIENCE */
+    .exp-item {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 3rem;
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--rule);
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .exp-item.visible { opacity: 1; transform: none; }
+
+    .exp-date {
+      font-size: 0.75rem;
+      color: var(--ink3);
+      margin-bottom: 0.3rem;
+      line-height: 1.5;
+    }
+
+    .exp-location {
+      font-size: 0.72rem;
+      color: var(--ink3);
+      font-style: italic;
+    }
+
+    .exp-company {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 0.2rem;
+    }
+
+    .exp-role {
+      font-size: 0.8rem;
+      color: var(--accent);
+      margin-bottom: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+    }
+
+    .exp-desc {
+      font-size: 0.85rem;
+      color: var(--ink2);
+      line-height: 1.85;
+      margin-bottom: 1rem;
+    }
+
+    /* PROJECTS */
+    .project-item {
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      gap: 2rem;
+      align-items: start;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--rule);
+      text-decoration: none;
+      color: inherit;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .project-item.visible { opacity: 1; transform: none; }
+    .project-item:hover .project-arrow { transform: translate(3px, -3px); color: var(--accent); }
+
+    .project-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: var(--ink3);
+      font-style: italic;
+      padding-top: 0.1rem;
+    }
+
+    .project-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .project-desc {
+      font-size: 0.82rem;
+      color: var(--ink2);
+      line-height: 1.8;
+      margin-bottom: 0.75rem;
+    }
+
+    .project-arrow {
+      font-size: 1.1rem;
+      color: var(--ink3);
+      transition: transform 0.2s, color 0.2s;
+      padding-top: 0.1rem;
+    }
+
+    /* CERTS */
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+    }
+
+    .cert-card {
+      background: var(--white);
+      padding: 1.75rem 2rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+      transition: background 0.2s;
+    }
+
+    .cert-card:hover { background: var(--surface); }
+
+    .cert-year {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-style: italic;
+      min-width: 52px;
+      padding-top: 0.1rem;
+    }
+
+    .cert-name {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 0.2rem;
+    }
+
+    .cert-issuer {
+      font-size: 0.75rem;
+      color: var(--ink3);
+    }
+
+    /* CONTACT */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .contact-intro {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.75rem;
+      font-weight: 300;
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-intro em { font-style: italic; color: var(--accent); }
+
+    .contact-body {
+      font-size: 0.85rem;
+      color: var(--ink2);
+      line-height: 1.85;
+      margin-bottom: 2rem;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--rule);
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 1.5rem;
+      text-decoration: none;
+      color: var(--ink2);
+      font-size: 0.82rem;
+      border-bottom: 1px solid var(--rule);
+      background: var(--white);
+      transition: all 0.2s;
+    }
+
+    .contact-link:last-child { border-bottom: none; }
+
+    .contact-link:hover {
+      background: var(--surface);
+      color: var(--accent);
+      padding-left: 2rem;
+    }
+
+    .contact-link-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink3);
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--rule);
+      padding: 2rem 5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--ink3);
+      font-size: 0.75rem;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; }
+      .hero-right { display: none; }
+      section { padding: 4rem 1.5rem; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+      .certs-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .project-item { grid-template-columns: 50px 1fr auto; gap: 1rem; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
+    }
+  </style>
 </head>
 <body>
-  <h1>Hola, soy [tu nombre]</h1>
-  <p>Bienvenido a mi página.</p>
+
+  <nav>
+    <a href="#" class="nav-logo">Francisco García Torres</a>
+    <ul class="nav-links">
+      <li><a href="#skills">Habilidades</a></li>
+      <li><a href="#experiencia">Experiencia</a></li>
+      <li><a href="#proyectos">Proyectos</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <h1 style="margin-bottom:0.5rem">Francisco<br>García Torres</h1>
+      <p style="font-size:0.9rem;color:var(--ink3);margin-bottom:2.5rem;animation:fadeUp 0.7s 0.15s ease both">.NET Developer · Elche / Barcelona</p>
+      <div class="hero-cta">
+        <a href="#contacto" class="btn btn-primary">Contactar</a>
+        <a href="#experiencia" class="btn btn-ghost">Trayectoria</a>
+        <a href="https://github.com/torgaiv" target="_blank" class="btn btn-ghost">GitHub ↗</a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="stats-card">
+        <div class="stats-card-title">Perfil profesional</div>
+        <div class="stat-row">
+          <span class="stat-row-label">Experiencia</span>
+          <span class="stat-row-value">~10 <span>años</span></span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Especialidad</span>
+          <span class="stat-row-value">.NET <span>/</span> C#</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Ubicación</span>
+          <span class="stat-row-value" style="font-size:1.1rem">Barcelona</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Formación</span>
+          <span class="stat-row-value" style="font-size:1rem;text-align:right;line-height:1.3">Ing. <span>Informática</span><br><small style="font-family:'DM Sans',sans-serif;font-size:0.7rem;color:var(--ink3)">UOC · en curso</small></span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Disponibilidad</span>
+          <span class="stat-row-value" style="font-size:0.95rem;color:var(--accent)">Abierto ✓</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-divider"></div>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-header reveal">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Habilidades técnicas</h2>
+    </div>
+    <div class="skills-grid reveal">
+      <div class="skill-card">
+        <div class="skill-name">.NET & C#</div>
+        <p class="skill-desc">El núcleo de mi trabajo durante casi una década. Desde MVC hasta APIs modernas.</p>
+        <div class="skill-tags">
+          <span class="tag">.NET Core</span><span class="tag">ASP.NET MVC</span><span class="tag">C#</span><span class="tag">WinForms</span><span class="tag">WPF</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">Datos & ORM</div>
+        <p class="skill-desc">Diseño, optimización y mantenimiento de bases de datos relacionales en producción.</p>
+        <div class="skill-tags">
+          <span class="tag">Entity Framework</span><span class="tag">SQL Server</span><span class="tag">PL-SQL</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">APIs & Servicios</div>
+        <p class="skill-desc">Diseño y consumo de servicios web en distintos proyectos y sectores.</p>
+        <div class="skill-tags">
+          <span class="tag">REST API</span><span class="tag">SOAP / SoapUI</span><span class="tag">IIS</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">Frontend</div>
+        <p class="skill-desc">Experiencia en desarrollo full stack con conocimiento sólido del lado cliente.</p>
+        <div class="skill-tags">
+          <span class="tag">Angular</span><span class="tag">HTML / CSS</span><span class="tag">JavaScript</span><span class="tag">Razor</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">DevOps & Calidad</div>
+        <p class="skill-desc">Del código al despliegue, con control de versiones y calidad en cada paso.</p>
+        <div class="skill-tags">
+          <span class="tag">Git</span><span class="tag">Jenkins</span><span class="tag">Azure DevOps</span><span class="tag">SonarQube</span><span class="tag">JIRA</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">Seguridad</div>
+        <p class="skill-desc">Formación reciente en desarrollo seguro, análisis y respuesta a incidentes.</p>
+        <div class="skill-tags">
+          <span class="tag">Desarrollo Seguro</span><span class="tag">Análisis de vulnerabilidades</span><span class="tag">OWASP</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCIA -->
+  <section id="experiencia">
+    <div class="section-header reveal">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Trayectoria profesional</h2>
+    </div>
+
+    <div class="exp-item">
+      <div>
+        <div class="exp-date">nov. 2021 — actualidad</div>
+        <div class="exp-location">Barcelona</div>
+      </div>
+      <div>
+        <div class="exp-company">ABAST</div>
+        <div class="exp-role">Analista Programador .NET</div>
+        <p class="exp-desc">Desarrollo y análisis de aplicaciones empresariales. Trabajo con Entity Framework, SQL Server y arquitectura de soluciones en entornos .NET.</p>
+        <div class="skill-tags">
+          <span class="tag">.NET</span><span class="tag">Entity Framework</span><span class="tag">SQL Server</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div>
+        <div class="exp-date">may. — nov. 2021</div>
+        <div class="exp-location">España</div>
+      </div>
+      <div>
+        <div class="exp-company">Órbita Ingeniería S.L.</div>
+        <div class="exp-role">Ingeniero de Proyectos</div>
+        <p class="exp-desc">Desarrollo de soluciones técnicas para proyectos de ingeniería con stack .NET.</p>
+        <div class="skill-tags">
+          <span class="tag">.NET</span><span class="tag">SQL</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div>
+        <div class="exp-date">ago. 2019 — may. 2021</div>
+        <div class="exp-location">Com. Valenciana</div>
+      </div>
+      <div>
+        <div class="exp-company">MESbook</div>
+        <div class="exp-role">Full Stack Developer</div>
+        <p class="exp-desc">Desarrollo full stack en una plataforma de gestión de fábricas en tiempo real (MES). Frontend con Angular y backend .NET.</p>
+        <div class="skill-tags">
+          <span class="tag">Full Stack</span><span class="tag">Angular</span><span class="tag">Entity Framework</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div>
+        <div class="exp-date">ene. 2018 — ago. 2019</div>
+        <div class="exp-location">Alicante</div>
+      </div>
+      <div>
+        <div class="exp-company">everis (NTT Data)</div>
+        <div class="exp-role">.NET Developer & Java Developer</div>
+        <p class="exp-desc">Consultoría tecnológica para clientes del sector financiero: Caja Rural / Seguros RGA (.NET, Angular, SQL Server, Jenkins, SonarQube) y Bankinter (Java EE).</p>
+        <div class="skill-tags">
+          <span class="tag">C#</span><span class="tag">ASP.NET MVC</span><span class="tag">Angular</span><span class="tag">Java EE</span><span class="tag">Jenkins</span><span class="tag">SonarQube</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROYECTOS -->
+  <section id="proyectos">
+    <div class="section-header reveal">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Proyectos propios</h2>
+    </div>
+
+    <a href="https://github.com/torgaiv" target="_blank" class="project-item">
+      <span class="project-num">01</span>
+      <div>
+        <div class="project-title">Translation API</div>
+        <p class="project-desc">Servicio web de traducción propio mediante web scraping sobre Google Translate con HttpClient. Permite traducir texto, archivos JSON completos y listar todos los idiomas disponibles según ISO 639-1.</p>
+        <div class="skill-tags">
+          <span class="tag">C#</span><span class="tag">Web API</span><span class="tag">Web Scraping</span><span class="tag">JSON</span>
+        </div>
+      </div>
+      <span class="project-arrow">↗</span>
+    </a>
+
+    <a href="https://www.linkedin.com/in/torgaiv" target="_blank" class="project-item">
+      <span class="project-num">02</span>
+      <div>
+        <div class="project-title">Security Research</div>
+        <p class="project-desc">Detección y divulgación responsable de una vulnerabilidad de validación expuesta en cliente en una plataforma de formación municipal. Las respuestas de exámenes se cargaban junto con las preguntas en el front.</p>
+        <div class="skill-tags">
+          <span class="tag">Seguridad</span><span class="tag">DevTools</span><span class="tag">Responsible Disclosure</span>
+        </div>
+      </div>
+      <span class="project-arrow">↗</span>
+    </a>
+
+    <a href="https://torgaiv.github.io" target="_blank" class="project-item">
+      <span class="project-num">03</span>
+      <div>
+        <div class="project-title">Este portfolio</div>
+        <p class="project-desc">HTML, CSS y JavaScript puro. Alojado en GitHub Pages con subdominio personalizado vía is-a.dev. Sin frameworks, sin dependencias.</p>
+        <div class="skill-tags">
+          <span class="tag">HTML/CSS</span><span class="tag">JavaScript</span><span class="tag">GitHub Pages</span>
+        </div>
+      </div>
+      <span class="project-arrow">↗</span>
+    </a>
+  </section>
+
+  <!-- FORMACIÓN -->
+  <section id="formacion">
+    <div class="section-header reveal">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Formación & Certificaciones</h2>
+    </div>
+    <div class="certs-grid reveal">
+      <div class="cert-card">
+        <span class="cert-year">2025</span>
+        <div>
+          <div class="cert-name">Ciberseguridad: Prevención, Análisis y Respuesta a Incidentes</div>
+          <div class="cert-issuer">SEPE — Fundación Estatal para la Formación en el Empleo</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <span class="cert-year">2025</span>
+        <div>
+          <div class="cert-name">Desarrollo Seguro</div>
+          <div class="cert-issuer">TecnoFor</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <span class="cert-year">2024</span>
+        <div>
+          <div class="cert-name">Developing Windows Applications with Visual Studio 2022 & C#</div>
+          <div class="cert-issuer">Fundae</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <span class="cert-year">2023</span>
+        <div>
+          <div class="cert-name">Introduction to Cybersecurity</div>
+          <div class="cert-issuer">Cisco · Credly verified</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <span class="cert-year">2022–2025</span>
+        <div>
+          <div class="cert-name">Grado en Ingeniería Informática</div>
+          <div class="cert-issuer">Universitat Oberta de Catalunya (UOC) · En curso</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <span class="cert-year">2014–16</span>
+        <div>
+          <div class="cert-name">Computer Science</div>
+          <div class="cert-issuer">Universidad de Alicante</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto">
+    <div class="section-header reveal">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Contacto</h2>
+    </div>
+    <div class="contact-grid reveal">
+      <div>
+        <p class="contact-intro">¿Tienes un proyecto <em>interesante</em> entre manos?</p>
+        <p class="contact-body">
+          Estoy abierto a nuevas oportunidades, colaboraciones o simplemente a charlar sobre tecnología. Si crees que puedo aportar valor a tu equipo o proyecto, escríbeme.
+        </p>
+        <a href="https://www.linkedin.com/in/torgaiv" target="_blank" class="btn btn-primary">Escribir por LinkedIn ↗</a>
+      </div>
+      <div class="contact-links">
+        <a href="https://github.com/torgaiv" target="_blank" class="contact-link">
+          <div>
+            <div class="contact-link-label">GitHub</div>
+            <div>github.com/torgaiv</div>
+          </div>
+          <span>↗</span>
+        </a>
+        <a href="https://www.linkedin.com/in/torgaiv" target="_blank" class="contact-link">
+          <div>
+            <div class="contact-link-label">LinkedIn</div>
+            <div>linkedin.com/in/torgaiv</div>
+          </div>
+          <span>↗</span>
+        </a>
+        <a href="https://torgaiv.github.io" target="_blank" class="contact-link">
+          <div>
+            <div class="contact-link-label">Web</div>
+            <div>torgaiv.github.io</div>
+          </div>
+          <span>↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Francisco García Torres</span>
+    <span>Elche · Barcelona</span>
+    <span>© 2025</span>
+  </footer>
+
+  <script>
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('visible');
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    document.querySelectorAll('.exp-item, .project-item').forEach((el, i) => {
+      el.style.transitionDelay = `${i * 0.08}s`;
+      io.observe(el);
+    });
+  </script>
 </body>
 </html>
